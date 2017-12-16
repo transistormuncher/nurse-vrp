@@ -1,0 +1,102 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+
+  <title>{% block title %}VRP{% endblock %}</title>
+  <!-- Bootstrap -->
+<link href="{%static 'css/bootstrap.min.css'%}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+
+  <div class="container">
+
+      <div class="masthead">
+        <h3 class="muted">Novaky Nurse</h3>
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container">
+              <ul class="nav">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'export'%}">Export</a></li>
+                <li><a href="{% url 'address-list'%}">Address List</a></li>
+                <li><a href="{% url 'address-list'%}">Tours</a></li>
+                <li><a href="{% url 'showing' %}">About</a></li>
+                <li><a href="{% url 'address-list'%}">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+        </div><!-- /.navbar -->
+      </div>
+
+
+
+<div class="container">
+    
+  {% block content %}
+<h2>title</h2>
+
+content
+
+
+  {% endblock %}
+
+ </div>
+
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{%static 'js/bootstrap.min.js'%}"></script>
+
+</body>
+</html>
+
+
+{% block pagination %}
+  {% if is_paginated %}
+      <div class="pagination">
+              <ul >
+              {% if page_obj.has_previous %}
+                 <li> <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a></li>
+                 {% else %}
+                 <li class="disabled"> <a href="#">previous</a></li>
+              {% endif %}
+              
+             
+       {% for i in page_obj.paginator.page_range %}
+       {% if  i == page_obj.number%}
+        <li class="active"><a href="{{ request.path }}?page={{ i }}">{{i}}</a></li>
+        {% else %}
+         
+         <li><a href="{{ request.path }}?page={{ i }}">{{i}}</a></li>
+
+        {% endif %}
+
+
+       {% endfor %}
+             
+              {% if page_obj.has_next %}
+                  <li><a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a></li>
+                  {% else %}
+                 <li class="disabled"><a href="#">next</a></li>
+              {% endif %}
+
+              </ul> 
+
+        
+      </div>
+
+    
+  {% endif %}
+{% endblock %}
+
+
+
+

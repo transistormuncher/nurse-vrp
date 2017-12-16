@@ -1,0 +1,15 @@
+id,name,Latitude,Longitude,address,city,service-duration,start-time,end-time,quantity
+Stop1,Novaky,48.7164472,18.5408304,Novaky,Novaky,00:02:00,00:00:00,05:00:00,1
+Stop2,Kvašov,49.06338635,18.23549005,Kvašov 204,Kvašov,00:07:00,00:00:00,05:00:00,1
+Stop3,Bratislava,48.1359085,17.15974406,Bratislava,Bratislava,00:07:00,00:00:00,05:00:00,1
+Stop4,Trnava1,48.3808256,17.58058375,Trnava,Trnava,00:02:00,00:00:00,05:00:00,1
+Stop5,Trnava2,48.3661031,17.5660658,Trnava 2,Trnava,00:06:00,00:00:00,05:00:00,1
+Stop6,Veľké Bedzany,48.6070407,18.1526343,Veľké Bedzany,Veľké Bedzany,00:06:00,00:00:00,05:00:00,1
+Stop7,Bojna,48.5752137,18.0570168,Bojna,Bojna,00:04:00,00:00:00,05:00:00,1
+Stop8,Zemianske Kostoľany,48.69053465,18.52665722,Zemianske Kostoľany,Zemianske Kostoľany,00:02:00,00:00:00,05:00:00,1
+Stop9,Prievidza,48.7718361,18.6234916,Prievidza,Prievidza,00:09:00,00:00:00,05:00:00,1
+Stop10,Handlová1,48.7185568,18.7584814,"29. augusta 82/3, 97251 Handlová",Handlová,00:02:00,00:00:00,05:00:00,1
+Stop11,Handlová2,48.7297834,18.74482807,"Janosikova 6, 97251 Handlová",Handlová,00:06:00,00:00:00,05:00:00,1
+Stop12,Sered,48.2889032,17.7308808,Sered,Sered,00:06:00,00:00:00,05:00:00,1
+Stop13,Brezno,48.8053349,19.6409612,Brezno,Brezno,00:06:00,00:00:00,05:00:00,1
+Stop14,Partizanske,48.6264092,18.3730067,Partizanske,Partizanske,00:04:00,00:00:00,05:00:00,1

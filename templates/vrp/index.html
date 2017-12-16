@@ -1,0 +1,20 @@
+
+{% extends "base_generic.html" %}
+
+{% block title %}Home{% endblock %}
+
+
+
+
+{% block content %}
+
+<h1>Home</h1>
+
+<p>{{msg}}</p>
+
+
+<a href="{% url 'address-list' %}" class="btn btn-primary">Check addresses</a>
+<a href="{% url 'export' %}" class="btn btn-primary">export addresses</a>
+<a href="{% url 'java' %}" class="btn btn-primary">run java</a>
+
+{% endblock %}

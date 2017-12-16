@@ -1,0 +1,75 @@
+
+
+{% extends "base_generic.html" %}
+
+{% block title %}Address Detail{% endblock %}
+
+
+
+
+{% block content %}
+
+
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+   integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+   crossorigin=""/>
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+   integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+   crossorigin=""></script>
+
+
+
+ <div class="row-fluid">
+        <div class="span4">
+<h2>Address Details</h2>
+
+<p>Address Name: {{ object.name }}</p>
+<p>Street: {{ object.street }} {{ object.housenumber }} </p>
+<p>City: {{ object.postcode }} {{ object.city }}</p>
+<p>Country: {{ object.country }}</p>
+<p>Latitude: {{ object.latitude }}</p>
+<p>Longitude {{ object.longitude }}</p>
+<p><a href="{% url 'address-update' object.id %}" class="btn btn-small btn-primary">Edit Address</a>
+<a href="{% url 'address-delete' object.id %}" class="btn btn-small btn-danger">Delete Address</a>
+</p>
+
+</div>
+<div class="span4">
+
+<div id="mapid" style="width: 400px; height: 400px;"></div>
+</div>
+</div>
+
+<script>
+
+    var mymap = L.map('mapid').setView([{{ object.latitude }}, {{ object.longitude }}], 15);
+
+   
+
+L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: ['a','b','c']
+}).addTo( mymap );
+
+
+     mymarker = L.marker([{{ object.latitude }}, {{ object.longitude }}], {draggable: true}).addTo(mymap);
+
+     mymarker.on('dragend', function(ev) {
+        console.log(mymarker.getLatLng());
+
+
+      })
+
+    
+
+</script>
+
+
+
+
+<p><a href="{% url 'address-list' %}">Back to address list</a></p>
+
+
+{% endblock %}

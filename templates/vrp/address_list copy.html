@@ -1,0 +1,27 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Addresses</title>
+<!-- Bootstrap -->
+<link href="{%static 'css/bootstrap.min.css'%}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Addresses</h2>
+
+    <ul>
+    {% for object in object_list %}
+    <li><a href="{%url 'address-detail' object.id %}">{{ object }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <a href="">Add Address</a>
+</div>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{%static 'js/bootstrap.min.js'%}"></script>
+
+</body>
+</html>

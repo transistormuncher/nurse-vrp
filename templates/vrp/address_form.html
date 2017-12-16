@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Add Address{% endblock %}
+
+{% block content %}
+<h1>Add Address</h1>
+
+<form method="POST"> {% csrf_token %}
+    {{ form }}
+    <button class="btn btn-primary" type="button" onclick="geocode()">Geocode</button>
+    <button class="btn btn-primary" type="submit">Save</button>
+</form>
+
+<script type="text/javascript">
+	
+	function geocode(){
+console.log("hallo");
+var street = document.getElementById('id_street').value.toLowerCase();
+var housenumber = document.getElementById('id_housenumber').value.toLowerCase();
+var postcode = document.getElementById('id_postcode').value.toLowerCase();
+var city = document.getElementById('id_city').value.toLowerCase();
+var country = document.getElementById('id_country').value.toLowerCase();
+var url = 'https://nominatim.openstreetmap.org/search?q='+housenumber+ '+' +street+ ',+' +postcode+ '+'+city+ ',+' +country+ '&format=json'
+console.log(url)
+
+ var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    console.log(this.responseText);
+      var response = JSON.parse(this.responseText);
+      document.getElementById('id_latitude').value = response[0].lat;
+	document.getElementById('id_longitude').value = response[0].lon;
+    }
+  };
+  xhttp.open("GET", url , true);
+  xhttp.send();
+
+
+};
+
+</script>
+
+{% endblock %}
+

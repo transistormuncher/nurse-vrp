@@ -1,0 +1,71 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+
+  <title>{% block title %}VRP{% endblock %}</title>
+  <!-- Bootstrap -->
+<link href="{%static 'css/bootstrap.min.css'%}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+
+  <div class="container">
+
+      <div class="masthead">
+        <h3 class="muted">Nurse VRP</h3>
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container">
+              <ul class="nav">
+                <li><a href="#">Home</a></li>
+                <li><a href="{% url 'address-list'%}">Projects</a></li>
+                <li><a href="{% url 'address-list'%}">Services</a></li>
+                <li><a href="{% url 'address-list'%}">Downloads</a></li>
+                <li><a href="{% url 'address-list'%}">About</a></li>
+                <li><a href="{% url 'address-list'%}">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+        </div><!-- /.navbar -->
+      </div>
+
+
+
+<div class="container">
+
+
+
+
+
+    
+  {% block content %}
+<h2>title</h2>
+
+content
+
+
+  {% endblock %}
+
+ </div>
+
+
+
+
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{%static 'js/bootstrap.min.js'%}"></script>
+
+</body>
+</html>
+
+
+
+

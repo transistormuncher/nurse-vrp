@@ -1,0 +1,17 @@
+
+{% extends "base_generic.html" %}
+
+
+{% block title %}Address list{% endblock %}
+
+{% block content %}
+    <h2>Address List</h2>
+
+    <ul>
+    {% for object in object_list %}
+    <li>{{ object }}</li>
+    {% endfor %}
+    </ul>
+
+
+{% endblock %}

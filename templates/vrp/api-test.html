@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>The XMLHttpRequest Object</h1>
+
+<form method="POST" id="form1">
+  City name:<br>
+  <input type="text" name="city" value="Novaky">
+  <br>
+  Street name:<br>
+  <input type="text" name="street" value="Ticha">
+  <br><br>
+  empty field:<br>
+  <input type="text" name="country" value="" id="country">
+  <br><br>
+  <input type="submit" value="Submit">
+  <button type="button" onclick="blubb()">new data</button>
+  <button type="button" onclick="pushing()">push data back</button>
+  <button type="button" onclick="coords()">get coords</button>
+</form> 
+
+
+
+
+<button type="button" onclick="loadDoc()">Request data</button>
+
+<p id="demo"></p>
+
+<script>
+
+function coords(){
+	console.log("coords");
+	var data = JSON.parse(demo.innerHTML);
+	console.log(data);
+    console.log(data[0].lat);
+    console.log(data[0].lon);
+};
+
+
+function pushing(){
+console.log("hallo");
+console.log(form1.city.value);
+document.getElementById('country').value = 'Slovakia';
+document.getElementById('demo').innerHTML = '[{"place_id":"110122491","licence":"Data © OpenStreetMap contributors, ODbL 1.0. http:\/\/www.openstreetmap.org\/copyright","osm_type":"way","osm_id":"170142086","boundingbox":["48.721287","48.7228505","18.547633","18.5506244"],"lat":"48.721287","lon":"18.5491726","display_name":"Tichá, Nováky, District of Prievidza, Region of Trenčín, Western Slovakia, 97271, Slovakia","class":"highway","type":"residential","importance":0.125}]';
+
+};
+
+
+
+function blubb(){
+console.log("hallo");
+console.log(form1.city.value);
+var city = form1.city.value;
+var url = 'https://nominatim.openstreetmap.org/search?q=ticha,+' + city + ',+slovakia&format=json'
+console.log(url)
+
+ var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", url , true);
+  xhttp.send();
+};
+
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "https://nominatim.openstreetmap.org/search?q=545+ticha,+novaky,+slovakia&format=json", true);
+  xhttp.send();
+}
+</script>
+ 
+</body>
+</html>
