@@ -30,3 +30,4 @@ class TourAdmin(admin.ModelAdmin):
 admin.site.register(Address, AddressAdmin)
 
 admin.site.register(Tour, TourAdmin)
+admin.site.register(Vehicle)

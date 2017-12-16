@@ -25,8 +25,20 @@ class Address(models.Model):
 class Tour(models.Model):
 	date = models.DateField()
 	stops = models.ManyToManyField(Address)
+	start_location = models.ForeignKey(Address, related_name='start_address', on_delete=models.CASCADE)
+	end_location = models.ForeignKey(Address, related_name='end_address', on_delete=models.CASCADE)
 	drivers = models.IntegerField(default=3)
 	notes = models.TextField(null=True, blank= True)
 
 	def __str__(self):
 		return u'Tour of {}' .format(self.date)
+
+
+class Vehicle(models.Model):
+	name = models.CharField(max_length= 100)
+	capacity = models.IntegerField(default=7)
+	comment = models.TextField(null=True, blank= True)
+
+	def __str__(self):
+		return u'{}_[capacity {}]' .format(self.name, self.capacity)
+
