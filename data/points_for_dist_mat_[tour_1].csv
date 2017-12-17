@@ -1,3 +1,4 @@
+function,id,name,lat,lon
 start,1,Novaky,48.7164472,18.5408304
 stop_1,4,Trnava1,48.3808256,17.58058375
 stop_2,5,Trnava2,48.3661031,17.5660658

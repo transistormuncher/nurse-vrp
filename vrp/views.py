@@ -128,8 +128,9 @@ def tour_calculate(request, pk):
 	export_points(tour)
 	f_in = "data/points_for_dist_mat_[tour_{}].csv".format(pk)
 	f_out = "data/dist_mat_[tour_{}].csv".format(pk)
+	gh_folder = "data/gh_data"
 
-	subprocess.Popen(['java', '-jar', 'myvrp.jar', f_in, f_out])
+	subprocess.Popen(['java', '-jar', 'java/gh_module.jar', f_in, f_out, gh_folder])
 	# gen distmat
 	# export addresses for service
 	# export vehicles
