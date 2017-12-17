@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Delete Vehicle{% endblock %}
+
+{% block content %}
+<h2>Delete Vehicle</h2>
+
+<b>Really delete {{ object }}?</b>
+<br>
+
+{% for name, value in object.get_fields %}
+   
+    <li>{{ name }}: {{ value }}</li>
+
+{% endfor %}
+<br>
+
+<p><b>It will be permanently lost</b></p>
+
+<form method="post">{% csrf_token %}
+    <button class="btn btn-danger" type="submit">Delete</button>
+    <a href="{% url 'vehicle-list' %}" class="btn btn-primary" >Cancel</a>
+</form>
+
+{% endblock %}

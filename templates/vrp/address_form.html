@@ -8,6 +8,7 @@
 <form method="POST"> {% csrf_token %}
     {{ form }}
     <button class="btn btn-primary" type="button" onclick="geocode()">Geocode</button>
+    <a href="{% url 'address-list' %}" class="btn btn-danger" >Cancel</a>
     <button class="btn btn-primary" type="submit">Save</button>
 </form>
 

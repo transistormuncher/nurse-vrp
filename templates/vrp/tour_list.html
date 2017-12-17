@@ -1,0 +1,35 @@
+
+{% extends "base_generic.html" %}
+
+
+{% block title %}Tour List{% endblock %}
+
+{% block content %}
+    <h2>Tour List</h2>
+    
+
+    <table class="table table-hover">
+    <tr>
+    <th>Date </th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Delete</th>
+
+    </tr>
+    
+    {% for object in object_list %}
+    <tr>
+    <td><a href="{%url 'tour-detail' object.id %}">{{ object.date }}</a> </td>
+    <td>{{ object.start_location }}</td>
+    <td>{{ object.end_location }}</td>
+    <td><a href="{% url 'tour-delete' object.id %}"><i class="icon-remove"></i></a></td>
+
+    </tr>
+    {% endfor %}
+    </table>
+    
+
+    <a href="{% url 'tour-create' %}" class="btn btn-primary">Add Tour</a>
+
+{% endblock %}
+

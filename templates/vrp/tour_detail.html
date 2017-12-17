@@ -1,0 +1,43 @@
+
+
+{% extends "base_generic.html" %}
+
+{% block title %}Tour Details{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+
+
+
+
+<h2>Tour Details</h2>
+
+<p>Tour Date: {{ object.date }}</p>
+<p>Start Location:  {{ object.start_location }} </p>
+<p>End Location: {{ object.end_location }}</p>
+<p>
+Stops: <ul>  {% for s in object.stops.all %} 
+ <li>{{s.name}} </li>  {% endfor %} </ul>
+ </p>
+
+<p>Vehicles: <ul>
+{% for v in object.vehicles.all %} 
+ <li>{{ v.name }} </li>  {% endfor %} </ul></p>
+<p>Number of Drivers: {{ object.drivers }}</p>
+<p>Notes: {{ object.notes }}</p>
+
+<p><a href="{% url 'tour-update' object.id %}" class="btn btn-small btn-primary">Edit Tour</a>
+<a href="{% url 'tour-delete' object.id %}" class="btn btn-small btn-danger">Delete Tour</a>
+<p><a href="{% url 'tour-calculate' object.id %}" class="btn btn-small btn-primary">Calculate Tour</a>
+</p>
+
+
+<p><a href="{% url 'tour-list' %}">Back to tour list</a></p>
+
+
+{% endblock %}

@@ -1,0 +1,33 @@
+
+
+{% extends "base_generic.html" %}
+
+{% block title %}Vehicle Details{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+
+
+
+
+<h2>Vehicle Details</h2>
+
+<p>Vehicle Name: {{ object.name }}</p>
+<p>Capacity:  {{ object.capacity }} </p>
+<p>Fuel Consumption: {{ object.fuel_consumption }}</p>
+<p>Notes: {{ object.notes }}</p>
+
+<p><a href="{% url 'vehicle-update' object.id %}" class="btn btn-small btn-primary">Edit Vehicle</a>
+<a href="{% url 'vehicle-delete' object.id %}" class="btn btn-small btn-danger">Delete Vehicle</a>
+</p>
+
+
+<p><a href="{% url 'vehicle-list' %}">Back to vehicle list</a></p>
+
+
+{% endblock %}
