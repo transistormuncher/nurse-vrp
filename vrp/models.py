@@ -6,6 +6,7 @@ from django import forms
 
 # Create your models here.
 class Address(models.Model):
+	"""Model for addresses"""
 	name = models.CharField(max_length= 100, blank=True, null=True)
 	street = models.CharField(max_length= 100, blank=True, null=True)
 	housenumber = models.CharField(max_length= 10, blank=True, null=True)
@@ -18,15 +19,18 @@ class Address(models.Model):
 	def __str__(self):
 		return u'[{}]_{}' .format(self.city, self.name)
 
+	# necessary for create view
 	@models.permalink
 	def get_absolute_url(self):
 		return ('address-detail', [self.id])
 
+	# necessary to iterate over fields of object
 	def get_fields(self):
 		return [(field.name, field.value_to_string(self)) for field in Address._meta.fields]
 
 
 class Vehicle(models.Model):
+	"""Vehicle model"""
 	name = models.CharField(max_length= 100)
 	capacity = models.IntegerField(default=7, help_text="number of passenger seats")
 	notes = models.TextField(null=True, blank= True)
@@ -44,6 +48,14 @@ class Vehicle(models.Model):
 
 
 class Tour(models.Model):
+	"""Tour model:
+	A tour consist of
+	- starting point
+	- end point
+	- stops in between start and end
+	- vehicles
+
+	"""
 	date = models.DateField()
 	stops = models.ManyToManyField(Address)
 	start_location = models.ForeignKey(Address, related_name='start_address', on_delete=models.CASCADE)
@@ -63,28 +75,31 @@ class Tour(models.Model):
 		return [(field.name, field.value_to_string(self)) for field in Tour._meta.fields]
 
 
+# should be in forms. py
+
 
 class TourForm(ModelForm):
-    
-    class Meta:
-        model = Tour
-        fields = ["date", "start_location", "end_location", "stops", "vehicles", "drivers", "notes"]
-             
-    def __init__(self, *args, **kwargs):
-        
-        super(TourForm, self).__init__(*args, **kwargs)
-        
-        self.fields["date"].widget = AdminDateWidget() #DateInput()
-        self.fields["start_location"].widget = Select()
-        self.fields["start_location"].queryset = Address.objects.all()
-        self.fields["end_location"].widget = Select()
-        self.fields["end_location"].queryset = Address.objects.all()
-        self.fields["stops"].widget = CheckboxSelectMultiple()
-        self.fields["stops"].queryset = Address.objects.all()
-        self.fields["vehicles"].widget = CheckboxSelectMultiple()
-        self.fields["vehicles"].queryset = Vehicle.objects.all()
-        self.fields["drivers"].widget = NumberInput()
-        self.fields["notes"].widget = Textarea()
+	"""Customized form for the tour model to have nicer widgets"""
+
+	class Meta:
+		model = Tour
+		fields = ["date", "start_location", "end_location", "stops", "vehicles", "drivers", "notes"]
+
+	def __init__(self, *args, **kwargs):
+
+		super(TourForm, self).__init__(*args, **kwargs)
+
+		self.fields["date"].widget = AdminDateWidget() #DateInput()
+		self.fields["start_location"].widget = Select()
+		self.fields["start_location"].queryset = Address.objects.all()
+		self.fields["end_location"].widget = Select()
+		self.fields["end_location"].queryset = Address.objects.all()
+		self.fields["stops"].widget = CheckboxSelectMultiple()
+		self.fields["stops"].queryset = Address.objects.all()
+		self.fields["vehicles"].widget = CheckboxSelectMultiple()
+		self.fields["vehicles"].queryset = Vehicle.objects.all()
+		self.fields["drivers"].widget = NumberInput()
+		self.fields["notes"].widget = Textarea()
 
 
 

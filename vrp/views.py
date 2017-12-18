@@ -18,8 +18,10 @@ from .exports import *
 
 
 def index(request):
-    context = {'msg': 'Welcome'}
-    return render(request, 'vrp/index.html', context)
+	"""Preliminary Index Site"""
+
+	context = {'msg': 'Welcome'}
+	return render(request, 'vrp/index.html', context)
 
 
 # test export
@@ -39,8 +41,8 @@ def show(request, pk):
 
 # java test
 def java(request):
+	"""Test call to a java jar"""
 	subprocess.Popen(['java', '-jar', 'hello.jar', "argument-1", "argument-2"])
-	# subprocess.Popen(['java', '-jar', 'graphhopper/graphhopper-web-0.9.0-with-dep.jar', "jetty.resourcebase=webapp", "config=graphhopper/config-example.properties", "datareader.file=graphhopper/slovakia-latest.osm.pbf"])
 	context = {'msg': "ran java"}
 	return render(request, 'vrp/index.html', context)
 
@@ -122,16 +124,19 @@ class TourDeleteView(DeleteView):
     	return reverse('tour-list')
 
 def tour_calculate(request, pk):
+	"""Calculates the optimal solution for a tour"""
 	tour = Tour.objects.get(pk=pk)
 	addresses = tour.stops.all()
 
+	# export points (for dist mat and services)
 	export_points(tour)
 	f_in = "data/points_for_dist_mat_[tour_{}].csv".format(pk)
 	f_out = "data/dist_mat_[tour_{}].csv".format(pk)
 	gh_folder = "data/gh_data"
 
-	subprocess.Popen(['java', '-jar', 'java/gh_module.jar', f_in, f_out, gh_folder])
 	# gen distmat
+	subprocess.Popen(['java', '-jar', 'java/gh_module.jar', f_in, f_out, gh_folder])
+	
 	# export addresses for service
 	# export vehicles
 	# start calculation

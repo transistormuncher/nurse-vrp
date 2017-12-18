@@ -1,0 +1,39 @@
+{% extends "base_generic.html" %}
+{% load staticfiles%}
+{% block title %}Add Tour{% endblock %}
+
+{% block content %}
+<h1>Add Tour</h1>
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+<script type="text/javascript" src="/admin/jsi18n/"></script> 
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script> 
+<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script> 
+<script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script> 
+<script type="text/javascript" src="{% static 'admin/js/actions.js' %}"></script> 
+
+
+
+<form method="POST"> {% csrf_token %}
+
+
+    {{ form }}
+
+    <p><a href="{% url 'tour-list' %}" class="btn btn-danger" >Cancel</a>
+    <button class="btn btn-primary" type="submit">Save</button></p>
+
+</form>
+
+
+
+
+
+
+
+
+{% endblock %}
+
