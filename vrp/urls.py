@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^export$', export, name='export'),
     url(r'^java$', java, name='java'),
     url(r'^show/(?P<pk>\d+)$', show, name='showing'),
+    url(r'^show_vrp/(?P<pk>\d+)$', show, name='show_vrp'),
 
     url(r'^address/$', AddressListView.as_view(), name='address-list'),
     url(r'^address/(?P<pk>\d+)$', AddressDetailView.as_view(), name='address-detail'),
@@ -25,7 +26,8 @@ urlpatterns = [
     url(r'^tour/create$', TourCreateView.as_view(), name='tour-create'),
     url(r'^tour/(?P<pk>\d+)/update$', TourUpdateView.as_view(), name='tour-update'),
     url(r'^tour/remove_tour/(?P<pk>\d+)/$', TourDeleteView.as_view(), name='tour-delete'),
-    url(r'^tour/(?P<pk>\d+)/calculate$', tour_calculate, name='tour-calculate'),
+    url(r'^tour/(?P<pk>\d+)/calculate$', tour_calculate_matrix, name='tour-calculate'),
+    url(r'^tour/(?P<pk>\d+)/solve$', tour_solve_vrp, name='tour-solve-vrp'),
 
 
 

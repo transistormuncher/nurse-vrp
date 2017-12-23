@@ -39,6 +39,17 @@ def show(request, pk):
 	context = {'object_list': my_list}
 	return render(request, 'vrp/show.html', context)
 
+# debug
+def show_vrp(request, pk):
+	my_list = []
+	df = pd.read_csv("data/dist_mat_[tour_{}].csv".format(pk))
+	for i in df.index:
+		my_list.append([df.iloc[i,0], df.iloc[i,1], df.iloc[i,2], df.iloc[i,3]])
+	
+	context = {'object_list': my_list}
+	return render(request, 'vrp/show.html', context)
+
+
 # java test
 def java(request):
 	"""Test call to a java jar"""
@@ -123,26 +134,37 @@ class TourDeleteView(DeleteView):
     def get_success_url(self):
     	return reverse('tour-list')
 
-def tour_calculate(request, pk):
+def tour_calculate_matrix(request, pk):
 	"""Calculates the optimal solution for a tour"""
 	tour = Tour.objects.get(pk=pk)
 	addresses = tour.stops.all()
 
 	# export points (for dist mat and services)
 	export_points(tour)
-	f_in = "data/points_for_dist_mat_[tour_{}].csv".format(pk)
+	export_vehicles(tour)
+	
+	# gen distmat
+	f_in = "data/points_for_[tour_{}].csv".format(pk)
 	f_out = "data/dist_mat_[tour_{}].csv".format(pk)
 	gh_folder = "data/gh_data"
+	p = subprocess.Popen(['java', '-jar', 'java/gh_module.jar', f_in, f_out, gh_folder])
 
-	# gen distmat
-	subprocess.Popen(['java', '-jar', 'java/gh_module.jar', f_in, f_out, gh_folder])
-	
-	# export addresses for service
-	# export vehicles
 	# start calculation
-	context = {'object': tour, 'addresses': addresses}
+	context = {'object': tour, 'addresses': addresses, 'returncode': p.returncode}
 	return render(request, 'vrp/tour_calculate.html', context)
 
+
+def tour_solve_vrp(request, pk):
+	"""Calculates the optimal solution for a tour"""
+	tour = Tour.objects.get(pk=pk)
+	
+	data_dir = "data/"
+	
+	p = subprocess.Popen(['java', '-jar', 'java/vrp_solver.jar', pk, data_dir])
+
+	# start calculation
+	context = {'object': tour, 'returncode': p.returncode}
+	return render(request, 'vrp/tour_solver.html', context)
 
 
 

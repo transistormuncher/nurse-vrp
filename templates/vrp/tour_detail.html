@@ -31,6 +31,10 @@ Stops: <ul>  {% for s in object.stops.all %}
 <p>Number of Drivers: {{ object.drivers }}</p>
 <p>Notes: {{ object.notes }}</p>
 
+<p>blubb: {{ object.parse_xml }} </p>
+
+
+
 <p><a href="{% url 'tour-update' object.id %}" class="btn btn-small btn-primary">Edit Tour</a>
 <a href="{% url 'tour-delete' object.id %}" class="btn btn-small btn-danger">Delete Tour</a>
 <p><a href="{% url 'tour-calculate' object.id %}" class="btn btn-small btn-primary">Calculate Tour</a>
@@ -38,6 +42,5 @@ Stops: <ul>  {% for s in object.stops.all %}
 
 
 <p><a href="{% url 'tour-list' %}">Back to tour list</a></p>
-
 
 {% endblock %}

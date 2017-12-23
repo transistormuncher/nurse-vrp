@@ -4,6 +4,7 @@ from django.forms.widgets import *
 from django.contrib.admin.widgets import AdminDateWidget
 from django import forms
 
+
 # Create your models here.
 class Address(models.Model):
 	"""Model for addresses"""
@@ -47,6 +48,54 @@ class Vehicle(models.Model):
 		return [(field.name, field.value_to_string(self)) for field in Vehicle._meta.fields]
 
 
+
+class Route(models.Model):
+	"""Route model:
+	A route consist of
+	- starting point
+	- end point
+	- stops in between start and end
+	- vehicle
+	
+	A route is a subset of a tour. A tour states the VRP to be solved: all stops and all vehicles. 
+	Solving the VRP creaates the routes, indicating which vehicle should service which stops in which order
+
+	"""
+	route_number = models.IntegerField()
+	tour = models.ForeignKey("Tour", on_delete=models.CASCADE)
+	vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+	# stops = needs to be an array field containign all stops in the correct order
+	distance = models.DecimalField(max_digits=7, decimal_places=2)
+	duration = models.DecimalField(max_digits=7, decimal_places=2)
+	instructions = models.TextField(null=True, blank= True)
+
+	def __str__(self):
+		return u'Route {}_{} ' .format(self.tour.id, self.route_number)
+
+	@models.permalink
+	def get_absolute_url(self):
+		return ('route-detail', [self.id])
+
+	def get_fields(self):
+		return [(field.name, field.value_to_string(self)) for field in Route._meta.fields]
+
+
+class Stop(models.Model):
+	address = models.ForeignKey(Address, on_delete=models.CASCADE)
+	route = models.ForeignKey('Route',  on_delete=models.CASCADE)
+	sequence = models.IntegerField()
+
+	class Meta:
+		unique_together = (('route', 'sequence'), )
+		ordering = ['route', 'sequence']
+
+	def __str__(self):
+		return u'{} [Stop {}] ' .format(self.route, self.sequence)
+
+
+
+
+from .model_functions import create_routes
 class Tour(models.Model):
 	"""Tour model:
 	A tour consist of
@@ -58,8 +107,8 @@ class Tour(models.Model):
 	"""
 	date = models.DateField()
 	stops = models.ManyToManyField(Address)
-	start_location = models.ForeignKey(Address, related_name='start_address', on_delete=models.CASCADE)
-	end_location = models.ForeignKey(Address, related_name='end_address', on_delete=models.CASCADE)
+	start_location = models.ForeignKey(Address, related_name='tour_start', on_delete=models.CASCADE)
+	end_location = models.ForeignKey(Address, related_name='tour_end', on_delete=models.CASCADE)
 	vehicles = models.ManyToManyField(Vehicle)
 	drivers = models.IntegerField(default=3)
 	notes = models.TextField(null=True, blank= True)
@@ -73,6 +122,12 @@ class Tour(models.Model):
 
 	def get_fields(self):
 		return [(field.name, field.value_to_string(self)) for field in Tour._meta.fields]
+
+	def parse_xml(self):
+		create_routes(self);
+		return("hallo")
+
+
 
 
 # should be in forms. py
@@ -100,6 +155,17 @@ class TourForm(ModelForm):
 		self.fields["vehicles"].queryset = Vehicle.objects.all()
 		self.fields["drivers"].widget = NumberInput()
 		self.fields["notes"].widget = Textarea()
+
+
+
+
+
+
+
+
+
+
+
 
 
 

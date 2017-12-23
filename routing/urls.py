@@ -18,8 +18,9 @@ from django.urls import path
 from django.conf.urls import include, url
 from django.contrib import admin
 
+
 urlpatterns = [
-    url(r'^vrp/', include('vrp.urls')),
+    url(r'^', include('vrp.urls')),
     url(r'^admin/', admin.site.urls),
 
 ]

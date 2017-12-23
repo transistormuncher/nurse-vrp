@@ -31,3 +31,5 @@ admin.site.register(Address, AddressAdmin)
 
 admin.site.register(Tour, TourAdmin)
 admin.site.register(Vehicle)
+admin.site.register(Stop)
+admin.site.register(Route)

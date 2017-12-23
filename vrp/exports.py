@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from .models import Address	
+from .models import Address
 
 
 def generate_stop_csv():
@@ -39,8 +39,24 @@ def export_points(tour):
 		mylist.append(["stop_{}".format(i), stop.id, stop.name, stop.latitude, stop.longitude])
 	mylist.append(["end", e.id, e.name, e.latitude, e.longitude])
 	export = pd.DataFrame(mylist, columns = ["function", "id", "name", "lat", "lon"])
-	fname = "data/points_for_dist_mat_[tour_{}].csv".format(tour.id)
+	fname = "data/points_for_[tour_{}].csv".format(tour.id)
 	export.to_csv(fname, header=True, index=False)
 
 	return
+
+def export_vehicles(tour):
+	mylist = []
+	
+	vehicles = tour.vehicles.all()
+
+	for v in vehicles:
+		mylist.append([v.id, v.capacity, tour.start_location.id, tour.end_location.id, tour.start_location.latitude, tour.start_location.longitude, tour.end_location.latitude, tour.end_location.longitude ])
+	
+	export = pd.DataFrame(mylist, columns = ["vehicle_id", "capacity", "start_location_id", "end_location_id", "start_lat", "start_lon", "end_lat", "end_lon"])
+	fname = "data/vehicles_[tour_{}].csv".format(tour.id)
+	export.to_csv(fname, header=True, index=False)
+
+	return
+
+
 

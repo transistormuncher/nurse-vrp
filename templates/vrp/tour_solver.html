@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+
+{% block title %}Calculate Tour{% endblock %}
+
+{% block content %}
+<h2>Solving VRP</h2>
+
+{{object}}
+
+{{object.start_location}} --> {{object.end_location}}
+
+
+
+
+
+<p><a href="{% url 'showing' object.id %}" class="btn btn-small btn-primary">Show vrp solution</a>
+
+
+
+    <a href="{% url 'tour-list' %}" class="btn btn-primary" >Back</a>
+
+
+{% endblock %}
