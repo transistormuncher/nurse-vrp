@@ -18,22 +18,19 @@
  <div class="row-fluid">
         <div class="span4">
 
-    <h2>Routes</h2>
 
-
-    {{object}}
 
 
 
 
     {% for r in routes%}
     <p><h3>{{r}}</h3></p>
-    <p><b>Vehicle: {{r.vehicle}}</b></p>
+    <p><b>Vehicle:</b> {{r.vehicle}}</p>
 
 
     {% for stop in r.stop_set.all %}
     <p> <b>Stop {{stop.sequence}}:</b> {{stop.address.name}} <br>
-    Distance: {{stop.distance}} km Duration: {{stop.duration}} min </p>
+    Distance: {{stop.distance}} km; Duration: {{stop.duration}} min </p>
     {% endfor %}
     <p><b>Total Distance:</b> {{r.get_total_distance}}</p>
     <p><b>Total Duration:</b> {{r.get_total_duration}}</p>
