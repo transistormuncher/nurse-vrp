@@ -3,6 +3,11 @@ from django.forms.models import ModelForm
 from django.forms.widgets import *
 from django.contrib.admin.widgets import AdminDateWidget
 from django import forms
+import subprocess
+import os.path
+import time
+import pandas as pd
+from django.db.models import Sum
 
 
 # Create your models here.
@@ -67,6 +72,7 @@ class Route(models.Model):
 	# stops = needs to be an array field containign all stops in the correct order
 	distance = models.DecimalField(max_digits=7, decimal_places=2)
 	duration = models.DecimalField(max_digits=7, decimal_places=2)
+	point_list = models.TextField(null=True, blank= True)
 	instructions = models.TextField(null=True, blank= True)
 
 	def __str__(self):
@@ -79,11 +85,31 @@ class Route(models.Model):
 	def get_fields(self):
 		return [(field.name, field.value_to_string(self)) for field in Route._meta.fields]
 
+	def get_total_distance(self):
+		dist = 0
+		for s in  self.stop_set.all():
+			dist += s.distance
+			self.distance = dist
+		return(dist)
+
+
+	def get_total_duration(self):
+		duration = 0
+		for s in  self.stop_set.all():
+			duration += s.duration
+			self.duration = duration
+		return(duration)
+
+
+
+
 
 class Stop(models.Model):
 	address = models.ForeignKey(Address, on_delete=models.CASCADE)
 	route = models.ForeignKey('Route',  on_delete=models.CASCADE)
 	sequence = models.IntegerField()
+	distance = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+	duration = models.DecimalField(max_digits=7, decimal_places=2, default=0)
 
 	class Meta:
 		unique_together = (('route', 'sequence'), )
@@ -123,9 +149,24 @@ class Tour(models.Model):
 	def get_fields(self):
 		return [(field.name, field.value_to_string(self)) for field in Tour._meta.fields]
 
+	def solve_vrp(self):
+		data_dir = "data/"
+		fname = "data/dist_mat_[tour_{}].csv".format(self.id)
+		while not os.path.isfile(fname):
+			time.sleep(1)
+			print("waiting for input files to be created")
+		p = subprocess.Popen(['java', '-jar', 'java/vrp_solver.jar', str(self.id), data_dir])
+		return("solved VRP")
+
 	def parse_xml(self):
+		fname = "data/vrp_output/solution_tour[{}].xml".format(self.id)
+		while not os.path.isfile(fname):
+			time.sleep(1)
+			print("waiting for xml file to be created")
 		create_routes(self);
-		return("hallo")
+		return("created routes")
+
+
 
 
 

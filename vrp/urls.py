@@ -26,8 +26,8 @@ urlpatterns = [
     url(r'^tour/create$', TourCreateView.as_view(), name='tour-create'),
     url(r'^tour/(?P<pk>\d+)/update$', TourUpdateView.as_view(), name='tour-update'),
     url(r'^tour/remove_tour/(?P<pk>\d+)/$', TourDeleteView.as_view(), name='tour-delete'),
-    url(r'^tour/(?P<pk>\d+)/calculate$', tour_calculate_matrix, name='tour-calculate'),
-    url(r'^tour/(?P<pk>\d+)/solve$', tour_solve_vrp, name='tour-solve-vrp'),
+    url(r'^tour/(?P<pk>\d+)/calculate$', tour_calculate, name='tour-calculate'),
+    url(r'^tour/(?P<pk>\d+)/routes$', tour_show_routes, name='show-routes'),
 
 
 
