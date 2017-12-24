@@ -3,41 +3,25 @@
 {% block title %}Calculate Tour{% endblock %}
 
 {% block content %}
-<h2>Calculate Tour</h2>
+<h2>Calculated Tour</h2>
+
+
+<p>{{object}}</p>
+
+<p>{{ object.solve_vrp }} </p>
 
 
 
 
-this is the 
-
-{{object}}
 
 
-
-{% for name, value in object.get_fields %}
-   
-    <li>{{ name }}: {{ value }}</li>
-
-{% endfor %}
-<br>
-
-addresses
-
-{{addresses}}
+ <P>{{ object.parse_xml }} </P>
 
 
-{% for a in addresses %}
-<p>{{a.name}}: {{a.longitude}}</p>
-{% endfor %}
+<p><a href="{% url 'show-routes' object.id %}" class="btn btn-primary">Show Routes</a>
 
 
-
-<p><a href="{% url 'showing' object.id %}" class="btn btn-small btn-primary">Show distance matrix</a>
-<p><a href="{% url 'tour-solve-vrp' object.id %}" class="btn btn-small btn-primary">Solve VRP</a>
-
-
-
-    <a href="{% url 'tour-list' %}" class="btn btn-primary" >Back</a>
+ <a href="{% url 'tour-detail' object.id %}" class="btn btn-primary" >Back</a></p>
 
 
 {% endblock %}

@@ -13,6 +13,9 @@ def create_routes(tour):
 	routes = s.getElementsByTagName("route")
 	p = re.compile('\d+$')
 
+	# delete old routes
+	tour.route_set.all().delete()
+
 	route_counter = 0
 	for route in routes:
 		route_counter += 1
@@ -20,8 +23,6 @@ def create_routes(tour):
 		v = route.getElementsByTagName('vehicleId')[0]
 		print(v.childNodes[0].data)
 		v_id = p.search(v.childNodes[0].data)[0]
-    	
-
 
 		route_obj, created = Route.objects.update_or_create(
 				route_number= route_counter,
@@ -52,7 +53,11 @@ def create_routes(tour):
 			stop_obj, created = Stop.objects.update_or_create(
 				address=Address.objects.get(pk=stop_id.childNodes[0].data),
 				route=route_obj,
-				sequence= stop_counter)
+				sequence= stop_counter,
+				defaults={
+				'distance': 0,
+				'duration': 0
+					})
 
 			print(stop_obj)
 			print("created: %s" % created)

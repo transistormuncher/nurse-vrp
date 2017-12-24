@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import *
 import subprocess
 import pandas as pd
+from decimal import Decimal
 
 
 # Create your views here.
@@ -134,10 +135,15 @@ class TourDeleteView(DeleteView):
     def get_success_url(self):
     	return reverse('tour-list')
 
-def tour_calculate_matrix(request, pk):
+def tour_calculate(request, pk):
 	"""Calculates the optimal solution for a tour"""
 	tour = Tour.objects.get(pk=pk)
 	addresses = tour.stops.all()
+
+	# delete previously existing files:
+	filename = "data/vrp_output/solution_tour[{}].xml".format(pk)
+	if os.path.exists(filename):
+		os.remove(filename) 
 
 	# export points (for dist mat and services)
 	export_points(tour)
@@ -146,25 +152,51 @@ def tour_calculate_matrix(request, pk):
 	# gen distmat
 	f_in = "data/points_for_[tour_{}].csv".format(pk)
 	f_out = "data/dist_mat_[tour_{}].csv".format(pk)
+	# clean old files
+	if os.path.exists(f_out):
+		os.remove(f_out) 
 	gh_folder = "data/gh_data"
 	p = subprocess.Popen(['java', '-jar', 'java/gh_module.jar', f_in, f_out, gh_folder])
 
 	# start calculation
-	context = {'object': tour, 'addresses': addresses, 'returncode': p.returncode}
+	context = {'object': tour, 'addresses': addresses}
 	return render(request, 'vrp/tour_calculate.html', context)
 
 
-def tour_solve_vrp(request, pk):
+def tour_show_routes(request, pk):
 	"""Calculates the optimal solution for a tour"""
 	tour = Tour.objects.get(pk=pk)
-	
-	data_dir = "data/"
-	
-	p = subprocess.Popen(['java', '-jar', 'java/vrp_solver.jar', pk, data_dir])
+	routes = tour.route_set.all()
+	#TODO calculate routes in ghopper
+	dist_mat = pd.read_csv("data/dist_mat_[tour_{}].csv".format(pk))
+	dist_mat["distance"] = round(dist_mat["distance"]/1000,2)
+	dist_mat["distance"] = dist_mat["distance"].apply(Decimal)
+	dist_mat["duration"] = dist_mat["duration"].apply(Decimal)
 
-	# start calculation
-	context = {'object': tour, 'returncode': p.returncode}
-	return render(request, 'vrp/tour_solver.html', context)
+	print(dist_mat)
+
+	for r in routes:
+		stops = r.stop_set.all()
+		length = stops.count()
+		for i in range(1,length):
+			stop = stops[i]
+			from_id = stops[i-1].address.id
+			to_id = stop.address.id
+			print(stops[i-1].address.id, stop.address.id)
+			print(dist_mat[(dist_mat["from id"] == from_id) & (dist_mat["to id"] == to_id)])
+			print(dist_mat[(dist_mat["from id"] == from_id) & (dist_mat["to id"] == to_id)]["distance"])
+			stop.distance = dist_mat[(dist_mat["from id"] == from_id) & (dist_mat["to id"] == to_id)]["distance"].values[0] 
+			stop.duration = dist_mat[(dist_mat["from id"] == from_id) & (dist_mat["to id"] == to_id)]["duration"].values[0]
+			stop.save(update_fields=['distance', 'duration'])
+			print(stop.distance, stop.duration)
+
+
+
+
+	context = {'tour': tour, 'routes': routes}
+
+	return render(request, 'vrp/show_routes.html', context)
+
 
 
 

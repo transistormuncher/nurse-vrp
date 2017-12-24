@@ -1,0 +1,101 @@
+
+{% extends "base_generic.html" %}
+{% load staticfiles %}
+
+{% block title %}Routes{% endblock %}
+
+{% block content %}
+   
+
+    <!-- LEAFLET -->
+ <link rel="stylesheet" href="{% static 'leaflet/leaflet.css'%}">
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="{% static 'leaflet/leaflet.js' %}"></script>
+
+
+
+ <div class="row-fluid">
+        <div class="span4">
+
+    <h2>Routes</h2>
+
+
+    {{object}}
+
+
+
+
+    {% for r in routes%}
+    <p><h3>{{r}}</h3></p>
+    <p><b>Vehicle: {{r.vehicle}}</b></p>
+
+
+    {% for stop in r.stop_set.all %}
+    <p> <b>Stop {{stop.sequence}}:</b> {{stop.address.name}} <br>
+    Distance: {{stop.distance}} km Duration: {{stop.duration}} min </p>
+    {% endfor %}
+    <p><b>Total Distance:</b> {{r.get_total_distance}}</p>
+    <p><b>Total Duration:</b> {{r.get_total_duration}}</p>
+    
+
+
+    {% endfor %}
+    
+
+</div>
+<div class="span8">
+
+
+<div id="mapid" style="width: 600px; height: 600px;"></div>
+
+<script>
+
+    var mymap = L.map('mapid').setView([48.6, 17.4], 8);
+
+   
+
+L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: ['a','b','c']
+}).addTo( mymap );
+
+   
+
+     
+</script>
+
+
+
+    <script>var r1_points = []</script>
+    {% for stop in routes.0.stop_set.all %}
+    <script type="text/javascript"> mymarker = L.marker([{{stop.address.latitude}}, {{stop.address.longitude}}]).addTo(mymap);
+    r1_points.push([{{stop.address.latitude}}, {{stop.address.longitude}}])
+    </script>
+
+    {% endfor %}
+  <script type="text/javascript">console.log(r1_points)
+  var polyline = L.polyline(r1_points, {color: 'red'}).addTo(mymap);
+</script>
+
+
+    <script>var r2_points = []</script>
+    {% for stop in routes.1.stop_set.all %}
+    <script type="text/javascript"> mymarker = L.marker([{{stop.address.latitude}}, {{stop.address.longitude}}]).addTo(mymap);
+    r2_points.push([{{stop.address.latitude}}, {{stop.address.longitude}}])
+    </script>
+
+    {% endfor %}
+  <script type="text/javascript">console.log(r2_points)
+  var polyline = L.polyline(r2_points, {color: 'blue'}).addTo(mymap);
+</script>
+  
+
+  
+
+
+    </div>
+</div>
+
+{% endblock %}
+
