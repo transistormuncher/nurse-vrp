@@ -166,6 +166,7 @@ def tour_calculate(request, pk):
 def tour_show_routes(request, pk):
 	"""Calculates the optimal solution for a tour"""
 	tour = Tour.objects.get(pk=pk)
+	tour.parse_xml()
 	routes = tour.route_set.all()
 	#TODO calculate routes in ghopper
 	dist_mat = pd.read_csv("data/dist_mat_[tour_{}].csv".format(pk))
