@@ -38,6 +38,7 @@
 
 
     {% endfor %}
+
     
 
 </div>
@@ -89,7 +90,8 @@ L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   
 
   
-
+<a href="{% url 'tour-detail' tour.id %}" class="btn btn-primary" >Back</a></p>
+<a href="{% url 'send-routes' tour.id %}" class="btn btn-primary" >Send Email</a></p>
 
     </div>
 </div>

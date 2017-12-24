@@ -134,6 +134,23 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 
+# EMAIL SETTINGS
+
+# EMAIL NOTIFICTIONS
+
+ADMINS = (('olli', 'oliver.folba@gmail.com'),)
+MANAGERS = ADMINSEMAIL_HOST = 'host'
+SEND_BROKEN_LINK_EMAILS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'novaky.nurse@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ['NOVAKY_MAIL_PW']
+EMAIL_USE_TLS = True
+SERVER_EMAIL = 'django@my-domain.com'
+EMAIL_HOST = 'smtp.gmail.com'
+SERVER_EMAIL = EMAIL_HOST_USER
+
 
 
 

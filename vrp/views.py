@@ -7,6 +7,10 @@ from .models import *
 import subprocess
 import pandas as pd
 from decimal import Decimal
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 # Create your views here.
@@ -197,6 +201,34 @@ def tour_show_routes(request, pk):
 	context = {'tour': tour, 'routes': routes}
 
 	return render(request, 'vrp/show_routes.html', context)
+
+
+
+def tour_send_routes_old(request, pk):
+	tour = Tour.objects.get(pk=pk)
+	routes = tour.route_set.all()
+	msg = "Hallo Olli,\nthese are the routes:\n\n"
+	for r in routes:
+		msg += "*" + r.__str__() + ":*\n"
+
+	subject = "Tour Plan"
+	res = send_mail(subject, msg, "novaky.nurse@gmail.com", ["oliver.folba@gmail.com"])
+	return HttpResponse('%s'%res)
+
+def tour_send_routes(request, pk):
+	tour = Tour.objects.get(pk=pk)
+	routes = tour.route_set.all()
+	subject, from_email, to = '{} Plan'.format(tour), 'novaky.nurse@gmail.com', 'oliver.folba@gmail.com'
+	html_content = render_to_string('vrp/tour_email.html', {'tour': tour, 'routes': routes}) # ...
+	text_content = strip_tags(html_content) # this strips the html, so people will have the text as well.
+	# create the email, and attach the HTML version as well.
+	msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+	msg.attach_alternative(html_content, "text/html")
+	msg.send()
+	context = {"msg": "Email sent"}
+	return render(request, 'vrp/index.html', context)
+
+
 
 
 
