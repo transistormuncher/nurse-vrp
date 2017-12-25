@@ -28,6 +28,9 @@ urlpatterns = [
     url(r'^tour/remove_tour/(?P<pk>\d+)/$', TourDeleteView.as_view(), name='tour-delete'),
     url(r'^tour/(?P<pk>\d+)/calculate$', tour_calculate, name='tour-calculate'),
     url(r'^tour/(?P<pk>\d+)/routes$', tour_show_routes, name='show-routes'),
+    url(r'^tour/(?P<pk>\d+)/send_routes$', tour_send_routes, name='send-routes'),
+
+
 
 
 

@@ -1,0 +1,39 @@
+
+{% extends "base_email.html" %}
+
+
+{% block title %}Routes{% endblock %}
+
+{% block content %}
+   
+
+Ahoj,<br><br>
+
+here are the routes for {{tour}}
+
+
+
+
+
+
+    {% for r in routes%}
+    <p><h3>{{r}}</h3></p>
+    <p><b>Vehicle:</b> {{r.vehicle}}</p>
+
+
+    {% for stop in r.stop_set.all %}
+    <p> <b>Stop {{stop.sequence}}:</b> {{stop.address.name}}, {{stop.address.street}} {{stop.address.housenumber}}, {{stop.address.postcode}} {{stop.address.city}}<br>
+    Distance: {{stop.distance}} km; Duration: {{stop.duration}} min </p>
+    {% endfor %}
+    <p><b>Total Distance:</b> {{r.get_total_distance}}</p>
+    <p><b>Total Duration:</b> {{r.get_total_duration}}</p>
+    
+
+
+    {% endfor %}
+
+    
+
+
+{% endblock %}
+
